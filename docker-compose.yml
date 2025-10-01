@@ -1,7 +1,9 @@
 version: "3.9"
 services:
   cart-service:
-    build: .
+    build:
+      context: ../   # parent folder
+      dockerfile: aithronix-cart/Dockerfile
     container_name: aithronix-cart
     ports:
       - "8082:8082"
@@ -12,8 +14,6 @@ services:
       SPRING_DATA_REDIS_PORT: 6379
     networks:
       - app-network
-    volumes:
-      - ./src:/app/src
 
 networks:
   app-network:

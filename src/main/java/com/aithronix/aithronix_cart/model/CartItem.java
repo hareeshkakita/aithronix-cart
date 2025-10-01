@@ -5,13 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartItem implements Serializable {
 
-    private Long productId;
+    private UUID productId;
     private int quantity;
     private double price;
 

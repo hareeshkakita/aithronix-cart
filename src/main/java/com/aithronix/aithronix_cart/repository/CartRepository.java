@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -14,11 +15,11 @@ public class CartRepository {
     private final RedisTemplate<String, Cart> redisTemplate;
     private static final long CART_TTL = 1;
 
-    private String key(Long userId) {
+    private String key(UUID userId) {
         return "cart:" + userId;
     }
 
-    public Cart findByUserId(Long userId) {
+    public Cart findByUserId(UUID userId) {
         return redisTemplate.opsForValue().get(key(userId));
     }
 
@@ -26,7 +27,7 @@ public class CartRepository {
         redisTemplate.opsForValue().set(key(cart.getUserId()), cart, CART_TTL, TimeUnit.DAYS);
     }
 
-    public void delete(Long userId) {
+    public void delete(UUID userId) {
         redisTemplate.delete(key(userId));
     }
 }

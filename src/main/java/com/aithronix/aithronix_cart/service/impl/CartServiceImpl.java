@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -18,13 +19,13 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
 
     @Override
-    public Cart getCart(Long userId) {
+    public Cart getCart(UUID userId) {
         return Optional.ofNullable(cartRepository.findByUserId(userId))
                 .orElseGet(() -> new Cart(userId, new ArrayList<>(), Instant.now()));
     }
 
     @Override
-    public Cart addItem(Long userId, Long productId, int quantity) {
+    public Cart addItem(UUID userId, UUID productId, int quantity) {
        // ProductDto product = productClient.getProduct(productId); // validate product & price
 
         Cart cart = getCart(userId);
@@ -43,7 +44,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart removeItem(Long userId, Long productId) {
+    public Cart removeItem(UUID userId, UUID productId) {
         Cart cart = getCart(userId);
         cart.getItems().removeIf(i -> i.getProductId().equals(productId));
         cart.setUpdatedAt(Instant.now());
@@ -52,12 +53,12 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void clearCart(Long userId) {
+    public void clearCart(UUID userId) {
         cartRepository.delete(userId);
     }
 
     @Override
-    public Cart updateItem(Long userId, Long productId, int quantity) {
+    public Cart updateItem(UUID userId, UUID productId, int quantity) {
         Cart cart = getCart(userId);
         cart.getItems().forEach(item -> {
             if (item.getProductId().equals(productId)) {
