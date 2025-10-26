@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "order-service", url = "${services.order.url}")
 public interface OrderClient {
-    @PostMapping("/orders")
+    @PostMapping("/api/v1/orders")
     OrderResponse createOrder(@RequestBody OrderRequest request);
 }
